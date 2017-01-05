@@ -638,12 +638,17 @@ function optimizeAncient() {
     }
     i = 2;
     for (var k in ancientArr) {
+        var change = sciFormat(Decimal.max(0, ancientArr[k].OptimalLevel.minus(ancientArr[k].Level)), 4);
+        var changes = change.split('e').map(c => parseFloat(c));
+        if (changes.length === 2) {
+            change = [changes[0] * 10000, 'e', changes[1] - 4].join('');
+        }
         tb.rows[i].cells[0].innerHTML = ancientArr[k].Name;
         tb.rows[i].cells[1].innerHTML = sciFormat(ancientArr[k].Level, 4);
         tb.rows[i].cells[1].setAttribute("title", decFormatGrouping(ancientArr[k].Level));
         tb.rows[i].cells[2].innerHTML = sciFormat(ancientArr[k].OptimalLevel, 4);
         tb.rows[i].cells[2].setAttribute("title", decFormatGrouping(ancientArr[k].OptimalLevel));
-        tb.rows[i].cells[3].firstChild.value = sciFormat(Decimal.max(0, ancientArr[k].OptimalLevel.minus(ancientArr[k].Level)), 4);
+        tb.rows[i].cells[3].firstChild.value = change;
         tb.rows[i].cells[4].innerHTML = sciFormat(ancientArr[k].CostToOptimal, 4);
         tb.rows[i].cells[4].setAttribute("title", decFormatGrouping(ancientArr[k].CostToOptimal));
         if ((ancientArr[k].Visible == "false") || (ancientArr[k].Level == 0))
